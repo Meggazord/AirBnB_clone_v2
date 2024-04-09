@@ -3,12 +3,12 @@
 Fabric script that creates and distributes an archive to your web servers
 """
 
-from fabric.api import env, local, put, run
+from fabric.api import *
 from datetime import datetime
 from os.path import exists
 import os
 
-env.hosts = ['18.207.2.191', '3.90.83.114']
+env.hosts = ['18.207.2.191']
 env.user = 'ubuntu'
 env.key_filename = '/path/to/your/private/key'
 
