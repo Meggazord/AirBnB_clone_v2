@@ -13,10 +13,8 @@ env.key_filename = '/Users/Megahed/.ssh/id_rsa'
 def do_deploy(archive_path):
     """
     Distributes an archive to your web servers
-
     Args:
         archive_path (str): Path to the archive file
-
     Returns:
         bool: True if all operations were successful, False otherwise
     """
