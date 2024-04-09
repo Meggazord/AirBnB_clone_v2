@@ -1,41 +1,16 @@
-#!/usr/bin/env bash
-# Prepare web servers for deployment of web_static
-
-if ! dpkg -s nginx &> /dev/null; then
-    sudo apt update
-    sudo apt install nginx -y
-fi
-
-mkdir -p /data/web_static/releases/test /data/web_static/shared
-echo "<html>
-<head>
-</head>
-<body>
-    Welcome to the Matrix!
-</body>
-</html>" > /data/web_static/releases/test/index.html
-
-ln -sf /data/web_static/releases/test/ /data/web_static/current
-chown -R ubuntu:ubuntu /data
-config_path="/etc/nginx/sites-available/default"
-sed -i "/listen 80 default_server;/a location /hbnb_static/ {\\n    alias /data/web_static/current/;\\n}" $config_path
-service nginx restart
-
-# Python script for creating and deploying the archive
-# Define Python script content here
-python_script_content='''#!/usr/bin/python3
+#!/usr/bin/python3
 """
 Fabric script that creates and distributes an archive to your web servers
 """
 
-from fabric.api import *
+from fabric.api import env, local, put, run
 from datetime import datetime
 from os.path import exists
 import os
 
-env.hosts = ['18.207.2.191']
+env.hosts = ['18.207.2.191', '3.90.83.114']
 env.user = 'ubuntu'
-env.key_filename = '/Users/Megahed/.ssh/id_rsa''
+env.key_filename = '/Users/Megahed/.ssh/id_rsa'
 
 def do_pack():
     """
@@ -87,4 +62,7 @@ def deploy():
     archive_path = do_pack()
     if not archive_path:
         return False
-    return do_deplo
+    return do_deploy(archive_path)
+
+if __name__ == "__main__":
+    deploy()
