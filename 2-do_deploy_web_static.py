@@ -3,7 +3,7 @@
 Fabric script that distributes an archive to your web servers
 """
 
-from fabric import *
+from fabric.api import env, put, run
 from os.path import exists
 
 env.hosts = ['18.207.2.191', '3.90.83.114']
@@ -13,14 +13,15 @@ env.key_filename = '/Users/Megahed/.ssh/id_rsa'
 def do_deploy(archive_path):
     """
     Distributes an archive to your web servers
+
     Args:
         archive_path (str): Path to the archive file
+
     Returns:
         bool: True if all operations were successful, False otherwise
     """
     if not exists(archive_path):
         return False
-    
     try:
         put(archive_path, '/tmp')
         archive_name = archive_path.split('/')[-1]
@@ -38,5 +39,3 @@ def do_deploy(archive_path):
 
 if __name__ == "__main__":
     do_deploy("<path_to_archive>")
-
-

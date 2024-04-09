@@ -3,9 +3,10 @@
 Fabric script that creates and distributes an archive to your web servers
 """
 
-from fabric import *
+from fabric.api import env, local, put, run
 from datetime import datetime
 from os.path import exists
+import os
 
 env.hosts = ['18.207.2.191', '3.90.83.114']
 env.user = 'ubuntu'
