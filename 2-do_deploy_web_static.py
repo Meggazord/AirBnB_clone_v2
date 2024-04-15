@@ -5,6 +5,7 @@ Fabric script that distributes an archive to your web servers
 
 from fabric.api import env, put, run
 from os.path import exists
+import os
 
 env.hosts = ['18.207.2.191', '3.90.83.114']
 env.user = 'ubuntu'
@@ -20,7 +21,7 @@ def do_deploy(archive_path):
     Returns:
         bool: True if all operations were done correctly, False otherwise
     """
-    if not os.path.exists(archive_path):
+    if not exists(archive_path):
         return False
 
     try:
