@@ -3,14 +3,14 @@
 Fabric script that creates and distributes an archive to your web servers
 """
 
-from fabric.api import env, local, put, run
+from fabric.api import *
 from datetime import datetime
 from os.path import exists
 import os
 
-env.hosts = ['18.207.2.191', '3.90.83.114']
+env.hosts = ['<IP web-01>', '<IP web-02>']
 env.user = 'ubuntu'
-env.key_filename = '/Users/Megahed/.ssh/id_rsa'
+env.key_filename = '/path/to/your/private/key'
 
 def do_pack():
     """
@@ -48,8 +48,10 @@ def do_deploy(archive_path):
         run('rm /tmp/{}'.format(archive_name))
         run('mv {}/web_static/* {}'.format(release_folder, release_folder))
         run('rm -rf {}/web_static'.format(release_folder))
+        run('echo "<html><head></head><body>Welcome to the Matrix!</body></html>" > {}/index.html'.format(release_folder))
         run('rm -rf /data/web_static/current')
         run('ln -s {} /data/web_static/current'.format(release_folder))
+        
         return True
     except Exception as e:
         print("Error:", e)
