@@ -34,25 +34,40 @@ def do_pack():
 
 def do_deploy(archive_path):
     """
-    Distributes an archive to your web servers and deploys it
+    Distributes an archive to the web servers and deploys it
+
+    Args:
+        archive_path (str): Path to the archive to deploy
+
+    Returns:
+        bool: True if all operations were done correctly, False otherwise
     """
     if not exists(archive_path):
         return False
-    
+
     try:
-        put(archive_path, '/tmp')
-        archive_name = archive_path.split('/')[-1]
-        release_folder = '/data/web_static/releases/' + archive_name[:-4]
-        run('mkdir -p {}'.format(release_folder))
-        run('tar -xzf /tmp/{} -C {}'.format(archive_name, release_folder))
-        run('rm /tmp/{}'.format(archive_name))
-        run('mv {}/web_static/* {}'.format(release_folder, release_folder))
-        run('rm -rf {}/web_static'.format(release_folder))
+        archive_name = os.path.basename(archive_path)
+        archive_name_no_ext = os.path.splitext(archive_name)[0]
+        remote_tmp = '/tmp/'
+        put(archive_path, remote_tmp)
+        run('mkdir -p /data/web_static/releases/{}/'
+            .format(archive_name_no_ext))
+        run('tar -xzf {}{} -C /data/web_static/releases/{}/'
+            .format(remote_tmp, archive_name, archive_name_no_ext))
+        run('rm {}{}'.format(remote_tmp, archive_name))
+        run('mv /data/web_static/releases/{}/web_static/* '
+            '/data/web_static/releases/{}/'
+            .format(archive_name_no_ext, archive_name_no_ext))
+        run('rm -rf /data/web_static/releases/{}/web_static'
+            .format(archive_name_no_ext))
         run('rm -rf /data/web_static/current')
-        run('ln -s {} /data/web_static/current'.format(release_folder))
+        run('ln -s /data/web_static/releases/{}/ /data/web_static/current'
+            .format(archive_name_no_ext))
+        print("New version deployed!")
         return True
+
     except Exception as e:
-        print("Error:", e)
+        print("Error: {}".format(e))
         return False
 
 def deploy():
