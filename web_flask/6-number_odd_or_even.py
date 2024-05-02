@@ -55,7 +55,7 @@ def number_template(n):
 def odd_or_even(n):
     """ Route that displays a number html template only if n is an integer """
     try:
-        if n % 2 == 0:
+        if int(n) % 2 == 0:
             check = 'even'
         else:
             check = 'odd'
