@@ -55,8 +55,11 @@ def number_template(n):
 def odd_or_even(n):
     """ Route that displays a number html template only if n is an integer """
     try:
-        if isinstance(n, int):
-            return render_template('6-number_odd_or_even.html', n=n)
+        if n % 2 == 0:
+            check = 'even'
+        else:
+            check = 'odd'
+        return render_template('6-number_odd_or_even.html', n=n, check=check)
     except ValueError:
         return '', 404
 
