@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Script that starts a Flask web application """
 
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -55,10 +55,8 @@ def number_template(n):
 def odd_or_even(n):
     """ Route that displays a number html template only if n is an integer """
     try:
-        if n % 2 == 0:
-            return render_template('6-number_odd_or_even.html', n='{} is even'.format(n))
-        else:
-            return render_template('6-number_odd_or_even.html', n='{} is odd'.format(n))
+        if isinstance(n, int):
+            return render_template('6-number_odd_or_even.html', n=n)
     except ValueError:
         return '', 404
 
