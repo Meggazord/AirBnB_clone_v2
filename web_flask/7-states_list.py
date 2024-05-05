@@ -85,4 +85,5 @@ def states_list():
 
 
 if __name__ == "__main__":
+    """To run the app"""
     app.run(host='0.0.0.0', port=5000)
