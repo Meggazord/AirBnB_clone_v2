@@ -10,12 +10,7 @@ app = Flask(__name__)
 
 @app.teardown_appcontext
 def teardown(exception):
-    """
-    Removes the current SQLAlchemy Session.
-
-    Args:
-        exception: Exception raised during the request.
-    """
+    """ exception: Exception raised during the request. """
     storage.close()
 
 
