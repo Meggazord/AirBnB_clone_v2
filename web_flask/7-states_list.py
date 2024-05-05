@@ -10,16 +10,26 @@ app = Flask(__name__)
 
 @app.teardown_appcontext
 def teardown(exception):
-    """Removes the current SQLAlchemy Session"""
+    """
+    Removes the current SQLAlchemy Session.
+
+    Args:
+        exception: Exception raised during the request.
+    """
     storage.close()
 
 
 @app.route('/states_list', strict_slashes=False)
 def states_list():
-    """Displays a HTML page with the list of State objects"""
+    """
+    Displays a HTML page with the list of State objects.
+
+    Returns:
+        Rendered HTML template with the list of State objects.
+    """
     states = storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
